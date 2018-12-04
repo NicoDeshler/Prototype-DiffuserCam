@@ -18,7 +18,7 @@
 %
 
 % Write/Read Image File Paths
-PSFsegmentsDir = fullfile('2018-11-09-2');
+PSFsegmentsDir = fullfile('stitchImgs2');
 % PSFsavePath = fullfile('Stitched PSF - 5x5cm Diffuser','PSFs', 'recon_PSF.tif');
 
 % Instantiate image data store.
