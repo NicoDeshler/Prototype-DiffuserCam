@@ -18,7 +18,7 @@
 %
 
 % Write/Read Image File Paths
-PSFsegmentsDir = fullfile('stitchImgs2');
+PSFsegmentsDir = fullfile('cam_imgs');
 % PSFsavePath = fullfile('Stitched PSF - 5x5cm Diffuser','PSFs', 'recon_PSF.tif');
 
 % Instantiate image data store.
@@ -83,7 +83,7 @@ for n = 2:num_imgs
     % well, rn doesnt matter bc height == width.
     x = delX-midpt(2);
     y = delY-midpt(1);
-    
+    %{
     xi_1 = [abs(x) imgSize(1)];
     xi_2 = [1 imgSize(1)-abs(x)];
     xi_3 = [1 imgSize(1)];
@@ -120,6 +120,7 @@ for n = 2:num_imgs
     %imshow(imgB(yi_b(1):yi_b(2), xi_b(1):xi_b(2)));
     alpha = mean2(overlapA) / mean2(overlapB);
     imwrite(alpha * color_imgB, calibrationScene.Files{n});
+    %}
 end
 
 % Make transforms sequential.
