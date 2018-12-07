@@ -18,7 +18,7 @@
 %
 
 % Write/Read Image File Paths
-PSFsegmentsDir = fullfile('stitchPanos');
+PSFsegmentsDir = fullfile('calib_method2');
 % PSFsavePath = fullfile('Stitched PSF - 5x5cm Diffuser','PSFs', 'recon_PSF.tif');
 
 % Instantiate image data store.
