@@ -18,7 +18,7 @@
 %
 
 % Write/Read Image File Paths
-PSFsegmentsDir = fullfile('cam_imgs');
+PSFsegmentsDir = fullfile('stitchPanos');
 % PSFsavePath = fullfile('Stitched PSF - 5x5cm Diffuser','PSFs', 'recon_PSF.tif');
 
 % Instantiate image data store.
@@ -69,14 +69,15 @@ for n = 2:num_imgs
     % Threshold the image to remove DC Term that causes peak.
     imgA = imgA/max(imgA(:));
     imgB = imgB/max(imgB(:));
-    threshold = .3;
+
+    threshold = .5;
     imgA = imgA > threshold;  % changes imgA to binary values, based on comparison
     imgB = imgB > threshold;
-       
     % Determine the image transformation by locating peak in cross
     % correlation
     midpt = imgSize(:,:,1);
     xCorr = xcorr2_fft(imgA, imgB);
+    
     maximum = max(max(xCorr));
     [delY, delX] = find(xCorr == maximum,1);
     tforms(n).T = [1, 0, 0; 0, 1, 0; delX-midpt(2), delY-midpt(1), 1];  % TODO should midpt(1) and midpt(2) be flipped??
@@ -121,6 +122,7 @@ for n = 2:num_imgs
     alpha = mean2(overlapA) / mean2(overlapB);
     imwrite(alpha * color_imgB, calibrationScene.Files{n});
     %}
+
 end
 
 % Make transforms sequential.
