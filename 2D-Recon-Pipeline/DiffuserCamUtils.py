@@ -102,6 +102,10 @@ def initialize(image_file, psf_file, f_lat = 1, f_ax = 1, type = 'pco', color = 
 
     return psf_down, image
 
+def set_QC_mask(mask):
+    global QC_mask
+    QC_mask = mask
+
 """
 Get cropping and padding functions to use based on PSF shape. Padding will embed
 the image into one with doubled dimensions. If N is provided, will zero out N
@@ -110,12 +114,13 @@ pixels.
 def get_crop_pad(psf, N = 0):
 
     up3d = np.array(psf.shape)
-    up_shape = up3d[0 : 2]      #unpadded shape. don't care about zstack
+    up_shape = up3d[0 : 2]      # unpadded shape. don't care about zstack
     padded_shape = 2 * up_shape
     pad_shape_3d = (padded_shape[0], padded_shape[1], up3d[2])      #pad x and y, not z.
 
     start_crop = (padded_shape - up_shape) // 2
     end_crop = start_crop + up_shape
+    
 
     # generate random incides to crop out
     (X, Y) = up_shape
@@ -129,6 +134,7 @@ def get_crop_pad(psf, N = 0):
     def crop2d(x, del_pixels = False):
         if len(x.shape) == 2:
             cropped = x[start_crop[0] : end_crop[0], start_crop[1] : end_crop[1]]
+            cropped = np.multiply(cropped, QC_mask)
             if del_pixels and N > 0:
                 cropped = pix_crop(cropped)
         elif len(x.shape) == 3:
